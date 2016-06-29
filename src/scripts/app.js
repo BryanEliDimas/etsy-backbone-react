@@ -58,8 +58,32 @@ var app = function(){
       return(
         <div className="nav-bar">
           <h1>Etsy</h1>
-          <input />
+          <SearchBar />
         </div>
+      )
+    }
+  })
+
+  var SearchBar = React.createClass({
+    getInitialState: function(){
+      return {
+        searchQuery: ""
+      }
+    },
+
+    updateTheState: function(e){
+      this.setState({ searchQuery: e.target.value })
+
+      var omg = _.debounce(function(){
+        location.hash = "search/" + this.state.searchQuery
+      }, 500)
+
+      omg.apply(this)
+    },
+
+    render: function(){
+      return(
+        <input value={this.state.searchQuery} onChange={this.updateTheState} />
       )
     }
   })
@@ -108,8 +132,6 @@ var app = function(){
       })
       .then(function(){
         ReactDOM.render(<EtsyView etsyColl={etsyColl} />, document.querySelector(".container"))
-        // window.yes = booyah
-        console.log(booyah)
       })
       .catch(function(err){
         console.log("Oh, crap. Error in activeListings", err)
@@ -128,8 +150,7 @@ var app = function(){
         }
       })
       .then(function(searchResults){
-        // window.searchResults = searchResults;
-        console.log("Search worked I guess")
+        console.log(etsyColl)
       })
       .catch(function(err){
         console.log("Oh, crap. Error in search", err)
@@ -147,9 +168,7 @@ var app = function(){
         }
       })
       .then(function(resp){
-        // window.showOne = etsyColl
-        // window.showOne = resp
-        // console.log("Showing one item worked I guess. in showOne")
+
       })
       .catch(function(err){
         console.log("Oh, crap. Error in showOne", err)
